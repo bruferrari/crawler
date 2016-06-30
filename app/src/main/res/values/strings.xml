@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Crawler</string>
+    <string name="action_settings">Settings</string>
+    <string name="mock_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in maximus lectus, nec eleifend arcu. Donec ullamcorper augue auctor magna ornare aliquet. Nulla at ex a nisl ultricies sodales euismod dapibus ipsum. Vivamus eu gravida dolor. Quisque luctus, magna nec condimentum posuere, tellus arcu porta nunc, a aliquet quam tortor vel metus. Praesent sagittis metus ante, sit amet elementum lorem feugiat dictum. Aliquam consectetur nibh vel velit lacinia, et posuere ipsum porttitor. Nam magna diam, pretium sed posuere et, venenatis eget turpis. Aenean in sem purus. Nulla imperdiet ante sapien, ultrices volutpat lorem semper vitae. Etiam non feugiat dolor, nec scelerisque quam. Etiam fringilla nisi varius, lobortis risus at, interdum neque. Donec pulvinar enim id lorem facilisis suscipit.</string>
+    <string name="news_url">\@ yahoo.com</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+</resources>
