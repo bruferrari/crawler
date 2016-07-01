@@ -1,5 +1,6 @@
 package ferrarib.com.app.crawler;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +20,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+
+import ferrarib.com.app.crawler.model.DataVO;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,9 +74,28 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new MyAdapter();
+        List<DataVO> dataList = fillCards();
+
+        mAdapter = new RecyclerViewAdapter(dataList, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
 
+    }
+
+    private List<DataVO> fillCards() {
+        List<DataVO> result = new ArrayList<>();
+        result.add(new DataVO("Title goes here",
+                getResources().getString(R.string.mock_text),
+                "yahoo.com",
+                Calendar.getInstance(),
+                R.drawable.image_mock));
+
+        result.add(new DataVO("What black America won't miss about Obama",
+                getResources().getString(R.string.mock_text),
+                "cnn.com",
+                Calendar.getInstance(),
+                R.drawable.image_obama));
+
+        return result;
     }
 
     private void addDrawerItems() {
@@ -130,30 +161,39 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-        private String[] mDataset;
+    public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
+        List<DataVO> dataVOList = new ArrayList<>();
+        Context ctx;
+
+        public RecyclerViewAdapter(List<DataVO> dataVOList, Context ctx) {
+            this.dataVOList = dataVOList;
+            this.ctx = ctx;
+        }
+
         public class ViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
-            public View mView;
-            public ViewHolder(View view) {
-                super(view);
-                mView = view;
+
+            CardView cv;
+            TextView title;
+            TextView description;
+            TextView source;
+            TextView publishingDate;
+            ImageView image;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                cv = (CardView) itemView.findViewById(R.id.card_view);
+                title = (TextView) itemView.findViewById(R.id.card_title);
+                description = (TextView) itemView.findViewById(R.id.card_description);
+                source = (TextView) itemView.findViewById(R.id.card_content_source);
+                publishingDate = (TextView) itemView.findViewById(R.id.card_content_publishing_date);
+                image = (ImageView) itemView.findViewById(R.id.card_image);
             }
         }
 
-        // Provide a suitable constructor (depends on the kind of dataset)
-//        public MyAdapter(String[] myDataset) {
-//            mDataset = myDataset;
-//        }
-
-        // Create new views (invoked by the layout manager)
         @Override
-        public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                       int viewType) {
+        public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                 int viewType) {
             View view = getLayoutInflater().inflate(R.layout.card_content_view, parent, false);
             final Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
             final ViewHolder vh = new ViewHolder(view);
@@ -168,21 +208,22 @@ public class MainActivity extends AppCompatActivity {
             return vh;
         }
 
-        // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            // - get element from your dataset at this position
-            // - replace the contents of the view with that element
+            SimpleDateFormat sdf = new SimpleDateFormat("MMM, d yyyy", Locale.getDefault());
+
+            holder.title.setText(dataVOList.get(position).getTitle());
+            holder.description.setText(dataVOList.get(position).getDescription());
+            holder.source.setText(String.format("@ %s", dataVOList.get(position).getSource()));
+            holder.publishingDate.setText(String.format("Published in %s",
+                    sdf.format(dataVOList.get(position).getPublishingDate().getTime())));
+            holder.image.setImageResource(dataVOList.get(position).getImageId());
         }
 
-        // Return the size of your dataset (invoked by the layout manager)
         @Override
         public int getItemCount() {
-//            return mDataset.length;
-            return 4;
-
+            return dataVOList.size();
         }
     }
-
 
 }

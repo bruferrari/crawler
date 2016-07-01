@@ -13,7 +13,8 @@
     app:cardElevation="@dimen/card_elevation"
     android:foreground="?selectableItemBackground"
     app:cardCornerRadius="4dp"
-    app:cardPreventCornerOverlap="true">
+    app:cardPreventCornerOverlap="true"
+    android:id="@+id/card_view">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,6 +26,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/card_image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:src="@drawable/image_mock"
@@ -38,6 +40,7 @@
                 android:layout_gravity="bottom"/>
 
             <TextView
+                android:id="@+id/card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Title goes here"
@@ -57,7 +60,7 @@
             android:padding="15dp">
 
             <TextView
-                android:id="@+id/my_text_view"
+                android:id="@+id/card_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/mock_text"
@@ -65,18 +68,19 @@
                 android:maxLines="4"/>
 
             <TextView
-                android:id="@+id/news_url"
+                android:id="@+id/card_content_source"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/news_url"
                 android:paddingBottom="3dp"
-                android:layout_below="@id/my_text_view"/>
+                android:layout_below="@id/card_description"/>
 
             <TextView
+                android:id="@+id/card_content_publishing_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Published in Jun 28, 2016"
-                android:layout_below="@id/news_url" />
+                android:layout_below="@id/card_content_source" />
         </RelativeLayout>
 
         <RelativeLayout
