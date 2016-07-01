@@ -10,4 +10,5 @@
     <dimen name="details_content_vertical_margin">15dp</dimen>
     <dimen name="card_view_land">200dp</dimen>
     <dimen name="card_portrait_img_height">250dp</dimen>
+    <dimen name="card_margin">4dp</dimen>
 </resources>
