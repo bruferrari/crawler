@@ -5,4 +5,6 @@
     <string name="news_url">\@ yahoo.com</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="btn_share">share</string>
+    <string name="btn_pin">pin</string>
 </resources>

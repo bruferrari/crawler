@@ -14,14 +14,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    private CardView mCardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
         }
 
-        mDrawerList = (ListView) findViewById(R.id.drawer_list);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        initializeUiComponents();
 
         addDrawerItems();
         setupDrawer();
@@ -71,10 +74,26 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.news_list_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        ((StaggeredGridLayoutManager) mLayoutManager)
+                .setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+
+        mRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        mRecyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        int viewWidth = mRecyclerView.getMeasuredWidth();
+                        float cardViewWidth = getResources().getDimension(R.dimen.card_view_land);
+                        int newSpanCount = (int) Math.floor(viewWidth/cardViewWidth);
+                        ((StaggeredGridLayoutManager)mLayoutManager).setSpanCount(newSpanCount);
+                        mLayoutManager.requestLayout();
+                    }
+                });
+
+//        mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         List<DataVO> dataList = fillCards();
@@ -82,6 +101,13 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new RecyclerViewAdapter(dataList, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
 
+    }
+
+    private void initializeUiComponents() {
+        mDrawerList = (ListView) findViewById(R.id.drawer_list);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mRecyclerView = (RecyclerView) findViewById(R.id.news_list_recycler_view);
+        mCardView = (CardView) findViewById(R.id.card_view);
     }
 
     private List<DataVO> fillCards() {
@@ -208,14 +234,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-
-            }
+            public void onBitmapFailed(Drawable errorDrawable) { }
 
             @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
+            public void onPrepareLoad(Drawable placeHolderDrawable) { }
 
-            }
         }
 
         @Override
@@ -238,15 +261,20 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             SimpleDateFormat sdf = new SimpleDateFormat("MMM, d yyyy", Locale.getDefault());
-
             holder.title.setText(dataVOList.get(position).getTitle());
-            holder.description.setText(dataVOList.get(position).getDescription());
-            holder.source.setText(String.format("@ %s", dataVOList.get(position).getSource()));
-            holder.publishingDate.setText(String.format("Published in %s",
-                    sdf.format(dataVOList.get(position).getPublishingDate().getTime())));
+
+            if (holder.description != null)
+                holder.description.setText(dataVOList.get(position).getDescription());
+
+            if (holder.source != null)
+                holder.source.setText(String.format("@ %s", dataVOList.get(position).getSource()));
+
+            if (holder.publishingDate != null)
+                holder.publishingDate.setText(String.format("Published in %s",
+                        sdf.format(dataVOList.get(position).getPublishingDate().getTime())));
             Picasso.with(getApplicationContext())
                     .load(dataVOList.get(position).getImageId())
-                    .fit()
+                    .fit().centerCrop()
                     .into(holder.image);
         }
 
