@@ -3,6 +3,8 @@ package ferrarib.com.app.crawler;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
@@ -23,16 +25,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
+import com.squareup.picasso.Target;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-
 import ferrarib.com.app.crawler.model.DataVO;
+import ferrarib.com.app.crawler.ui.DynamicHeightImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -173,13 +174,14 @@ public class MainActivity extends AppCompatActivity {
 
         List<DataVO> dataVOList = new ArrayList<>();
         Context ctx;
+        DynamicHeightImageView dynamicHeightImageView;
 
         public RecyclerViewAdapter(List<DataVO> dataVOList, Context ctx) {
             this.dataVOList = dataVOList;
             this.ctx = ctx;
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder implements Target {
 
             CardView cv;
             TextView title;
@@ -196,6 +198,23 @@ public class MainActivity extends AppCompatActivity {
                 source = (TextView) itemView.findViewById(R.id.card_content_source);
                 publishingDate = (TextView) itemView.findViewById(R.id.card_content_publishing_date);
                 image = (ImageView) itemView.findViewById(R.id.card_image);
+            }
+
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                float ratio = (float) bitmap.getHeight() / bitmap.getWidth();
+                dynamicHeightImageView.setHeightRatio(ratio);
+                dynamicHeightImageView.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
             }
         }
 
