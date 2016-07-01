@@ -28,9 +28,7 @@
             <ImageView
                 android:id="@+id/card_image"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/image_mock"
-                android:scaleType="fitXY"/>
+                android:layout_height="200dp"/>
 
             <View
                 android:id="@+id/screen_protector"

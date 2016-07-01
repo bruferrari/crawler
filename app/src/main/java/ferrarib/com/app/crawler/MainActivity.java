@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -94,6 +96,12 @@ public class MainActivity extends AppCompatActivity {
                 "cnn.com",
                 Calendar.getInstance(),
                 R.drawable.image_obama));
+
+        result.add(new DataVO("The (Overcrowded) Sidewalks of New York",
+                getResources().getString(R.string.mock_text),
+                "nytimes.com",
+                Calendar.getInstance(),
+                R.drawable.image_sidewalk));
 
         return result;
     }
@@ -217,7 +225,10 @@ public class MainActivity extends AppCompatActivity {
             holder.source.setText(String.format("@ %s", dataVOList.get(position).getSource()));
             holder.publishingDate.setText(String.format("Published in %s",
                     sdf.format(dataVOList.get(position).getPublishingDate().getTime())));
-            holder.image.setImageResource(dataVOList.get(position).getImageId());
+            Picasso.with(getApplicationContext())
+                    .load(dataVOList.get(position).getImageId())
+                    .fit()
+                    .into(holder.image);
         }
 
         @Override
