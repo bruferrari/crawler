@@ -91,13 +91,13 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
         SimpleDateFormat sdf = new SimpleDateFormat("MMM, d yyyy", Locale.getDefault());
         holder.title.setText(dataVOList.get(position).getTitle());
 
-        if (holder.description != null)
+        if (descriptionExists(holder))
             holder.description.setText(dataVOList.get(position).getDescription());
 
-        if (holder.source != null)
+        if (sourceExists(holder))
             holder.source.setText(String.format("@ %s", dataVOList.get(position).getSource()));
 
-        if (holder.publishingDate != null)
+        if (publishingDateExists(holder))
             holder.publishingDate.setText(String.format("Published in %s",
                     sdf.format(dataVOList.get(position).getPublishingDate().getTime())));
 
@@ -105,6 +105,18 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
                 .load(dataVOList.get(position).getImageId())
                 .resize(400, 0)
                 .into(holder.image);
+    }
+
+    private boolean publishingDateExists(ViewHolder holder) {
+        return holder.publishingDate != null;
+    }
+
+    private boolean sourceExists(ViewHolder holder) {
+        return holder.source != null;
+    }
+
+    private boolean descriptionExists(ViewHolder holder) {
+        return holder.description != null;
     }
 
     @Override
