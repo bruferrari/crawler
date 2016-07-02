@@ -10,6 +10,10 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
+import ferrarib.com.app.crawler.ui.DynamicHeightImageView;
+
 
 /**
  * Created by bruno on 6/30/16.
@@ -18,17 +22,29 @@ public class DetailsActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private DynamicHeightImageView dynamicHeightImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_view);
-        mToolbar = (Toolbar) findViewById(R.id.details_toolbar);
+        initializeUiComponents();
         setSupportActionBar(mToolbar);
         setUpToolbar();
+        setImage();
+    }
 
+    private void initializeUiComponents() {
+        mToolbar = (Toolbar) findViewById(R.id.details_toolbar);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_layout);
-//        setPaletteColor();
+        dynamicHeightImageView = (DynamicHeightImageView) findViewById(R.id.details_img);
+    }
+
+    private void setImage() {
+        Picasso.with(this)
+                .load(R.drawable.image_mock)
+                .fit().centerCrop()
+                .into(dynamicHeightImageView);
     }
 
     private void setPaletteColor() {

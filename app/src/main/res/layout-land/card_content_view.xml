@@ -23,7 +23,8 @@
             <ferrarib.com.app.crawler.ui.DynamicHeightImageView
                 android:id="@+id/card_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
 
             <View
                 android:id="@+id/screen_protector"

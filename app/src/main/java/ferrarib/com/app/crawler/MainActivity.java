@@ -30,6 +30,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.squareup.picasso.Transformation;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,11 +60,7 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
+        setUpToolbar();
 
         initializeUiComponents();
 
@@ -93,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-//        mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         List<DataVO> dataList = fillCards();
@@ -101,6 +98,14 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new RecyclerViewAdapter(dataList, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
 
+    }
+
+    private void setUpToolbar() {
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
     }
 
     private void initializeUiComponents() {
@@ -251,7 +256,6 @@ public class MainActivity extends AppCompatActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("TAG", String.valueOf(vh.getAdapterPosition()));
                     startActivity(intent);
                 }
             });
@@ -259,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
             SimpleDateFormat sdf = new SimpleDateFormat("MMM, d yyyy", Locale.getDefault());
             holder.title.setText(dataVOList.get(position).getTitle());
 
@@ -272,9 +276,10 @@ public class MainActivity extends AppCompatActivity {
             if (holder.publishingDate != null)
                 holder.publishingDate.setText(String.format("Published in %s",
                         sdf.format(dataVOList.get(position).getPublishingDate().getTime())));
+
             Picasso.with(getApplicationContext())
                     .load(dataVOList.get(position).getImageId())
-                    .fit().centerCrop()
+                    .resize(400, 0)
                     .into(holder.image);
         }
 
