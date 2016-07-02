@@ -9,9 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
-
 import com.squareup.picasso.Picasso;
-
 import ferrarib.com.app.crawler.ui.DynamicHeightImageView;
 
 
@@ -21,7 +19,6 @@ import ferrarib.com.app.crawler.ui.DynamicHeightImageView;
 public class DetailsActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private DynamicHeightImageView dynamicHeightImageView;
 
     @Override
@@ -36,7 +33,6 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void initializeUiComponents() {
         mToolbar = (Toolbar) findViewById(R.id.details_toolbar);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_layout);
         dynamicHeightImageView = (DynamicHeightImageView) findViewById(R.id.details_img);
     }
 

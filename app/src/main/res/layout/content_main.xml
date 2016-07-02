@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/ltgray"
-    tools:context="ferrarib.com.app.crawler.MainActivity">
+    tools:context=".MainListActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
