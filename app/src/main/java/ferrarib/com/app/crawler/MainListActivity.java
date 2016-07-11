@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,11 +18,21 @@ import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import ferrarib.com.app.crawler.adapter.CardRecyclerViewAdapter;
 import ferrarib.com.app.crawler.model.DataVO;
+import ferrarib.com.app.crawler.model.Response;
+import ferrarib.com.app.crawler.model.WebHoseEndpoints;
+import ferrarib.com.app.crawler.util.Utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainListActivity extends AppCompatActivity {
 
@@ -76,6 +87,47 @@ public class MainListActivity extends AppCompatActivity {
 
         mAdapter = new CardRecyclerViewAdapter(dataList, MainListActivity.this);
         mRecyclerView.setAdapter(mAdapter);
+
+        getJson("android");
+    }
+
+    private void getJson(String query) {
+        String BASE_URL = null;
+        String TOKEN = null;
+        try {
+            TOKEN = Utils.getProperty("api_token", getApplicationContext());
+            BASE_URL = Utils.getProperty("api_url", getApplicationContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        final int querySize = 10;
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        WebHoseEndpoints apiService = retrofit.create(WebHoseEndpoints.class);
+        Call<ferrarib.com.app.crawler.model.Response> call
+                = apiService.simpleQuery(query, TOKEN, "json", querySize);
+//        Call<ferrarib.com.app.crawler.model.Response> call
+//                = apiService.queryByPerformanceMeasure(URLEncoder.encode(":>9"), query,
+//                TOKEN, "json", querySize);
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                int statusCode = response.code();
+//                Post post = (Post) response.body();
+                Log.d("MAIN", String.valueOf(response.body()));
+                Log.d("MAIN", String.valueOf(statusCode));
+                Log.d("MAIN", String.valueOf(response.raw()));
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                Log.e("MAIN", t.getMessage() + "Caused by: " + t.getCause());
+            }
+        });
 
     }
 
