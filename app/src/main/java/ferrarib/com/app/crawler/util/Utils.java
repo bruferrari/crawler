@@ -12,7 +12,7 @@ import java.util.Properties;
  */
 public class Utils {
 
-    private static final String PROPS_FILE_NAME = "config.properties";
+    private static final String PROPS_FILE_NAME = "api.properties";
 
     public static String getProperty(String key, Context ctx) throws IOException {
         Properties props = new Properties();
