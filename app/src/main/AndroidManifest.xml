@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ferrarib.com.app.crawler">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -35,6 +37,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainListActivity" />
         </activity>
+
+        <service
+            android:name=".FetchAddressIntentService"
+            android:exported="false" />
+
     </application>
 
 </manifest>

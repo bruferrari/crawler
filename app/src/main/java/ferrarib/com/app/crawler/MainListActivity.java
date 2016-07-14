@@ -17,13 +17,14 @@ import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import java.io.UnsupportedEncodingException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import ferrarib.com.app.crawler.adapter.CardRecyclerViewAdapter;
-import ferrarib.com.app.crawler.helper.ApiService;
+import ferrarib.com.app.crawler.service.ApiService;
 import ferrarib.com.app.crawler.model.DataVO;
+import ferrarib.com.app.crawler.util.Utils;
 
 public class MainListActivity extends AppCompatActivity {
 
@@ -37,6 +38,8 @@ public class MainListActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
 
     private ApiService apiService = new ApiService(this);
+    private Utils utils;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +84,26 @@ public class MainListActivity extends AppCompatActivity {
         mAdapter = new CardRecyclerViewAdapter(dataList, MainListActivity.this);
         mRecyclerView.setAdapter(mAdapter);
 
-        try {
-            apiService.queryByPerformanceScore(8, "obama");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        utils = new Utils(this);
+        mGoogleApiClient = utils.getGoogleApiClient();
+//        try {
+//            apiService.queryByPerformanceScore(8, "obama");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
     private void setUpToolbar() {

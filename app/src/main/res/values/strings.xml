@@ -7,4 +7,8 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="btn_share">share</string>
     <string name="btn_pin">pin</string>
+    <string name="service_not_available">Service is not available</string>
+    <string name="no_addresses_found">No addresses found for this location</string>
+    <string name="address_found">Address found</string>
+    <string name="no_location_data">Error while trying to handle intent. Location must not be null.</string>
 </resources>

@@ -1,4 +1,4 @@
-package ferrarib.com.app.crawler.helper;
+package ferrarib.com.app.crawler.service;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
