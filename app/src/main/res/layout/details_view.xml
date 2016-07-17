@@ -35,7 +35,7 @@
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax">
 
-                <ferrarib.com.app.crawler.ui.DynamicHeightImageView
+                <com.ferrarib.crawler.ui.DynamicHeightImageView
                     android:id="@+id/details_img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ferrarib.com.app.crawler">
+    package="com.ferrarib.crawler">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -16,7 +16,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="ferrarib.com.app.crawler.BuildConfig.MAPS_API_KEY" />
+            android:value="com.ferrarib.crawler.BuildConfig.MAPS_API_KEY" />
 
         <activity
             android:name=".MainListActivity"

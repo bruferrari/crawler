@@ -9,7 +9,7 @@ android {
     buildToolsVersion "24.0.0"
 
     defaultConfig {
-        applicationId "ferrarib.com.app.crawler"
+        applicationId "com.ferrarib.crawler"
         minSdkVersion 16
         targetSdkVersion 24
         versionCode 1
@@ -18,7 +18,7 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField 'String', 'MAPS_API_KEY', 'your-key-goes-here'
+            buildConfigField 'String', 'MAPS_API_KEY', '"AIzaSyBAW3hQsP7Ta2MifdSr7Os42rBgs4OO8Rs"'
         }
 
         release {
